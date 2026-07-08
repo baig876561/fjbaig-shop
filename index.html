@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FJBAIG — Premium Unbranded Clothing</title>
+  <meta name="description"
+    content="FJBAIG LLC — Shop premium unbranded clothing for boys, girls, and babies. Hoodies, shirts, summer rompers and more.">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+
+  <!-- ═══ PROMO BAR ═══ -->
+  <div class="promo-bar" id="promoBar">
+    <span>Sign up for our newsletter &amp; get <strong>10 % off</strong> your first order &nbsp;|&nbsp; Free shipping on
+      orders over $50</span>
+  </div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-6">
+        <div class="mobile-menu-btn text-xl" onclick="toggleMobileNav()"><i class="fas fa-bars"></i></div>
+        <a class="nav-brand" onclick="showView('home')">FJBAIG</a>
+      </div>
+      <div class="nav-links flex items-center gap-8">
+        <span onclick="showView('home')">Home</span>
+        <span onclick="showView('shop')">Shop</span>
+        <span onclick="showView('about')">About Us</span>
+        <span onclick="showView('contact')">Contact</span>
+      </div>
+      <div class="flex items-center gap-5">
+        <div class="nav-icon" onclick="showView('wishlist')" title="Wishlist"><i class="far fa-heart"></i></div>
+        <div class="nav-icon" onclick="openCart()" title="Cart"><i class="fas fa-shopping-bag"></i><span
+            class="cart-badge" id="cartBadge">0</span></div>
+        <div class="nav-icon" id="authNavBtn" onclick="showView('login')"><i class="far fa-user"></i></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE NAV ═══ -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-close" onclick="toggleMobileNav()">&times;</div>
+    <span onclick="showView('home');toggleMobileNav()">Home</span>
+    
+    <!-- Collapsible Categories -->
+    <div class="w-full">
+      <span class="flex justify-between items-center w-full" onclick="document.getElementById('mobileCats').classList.toggle('hidden')">
+        Categories <i class="fas fa-chevron-down text-sm"></i>
+      </span>
+      <div id="mobileCats" class="hidden pl-4 mt-2 mb-2 space-y-3 border-l-2 border-slate-200 text-sm text-slate-500">
+        <div onclick="filterByCategory('all');toggleMobileNav()" class="cursor-pointer hover:text-slate-900">All Products</div>
+        <div onclick="filterByCategory('Boys Hoodies & Sweatshirts');toggleMobileNav()" class="cursor-pointer hover:text-slate-900">Boys Hoodies &amp; Sweatshirts</div>
+        <div onclick="filterByCategory('Boys Everyday T-Shirts');toggleMobileNav()" class="cursor-pointer hover:text-slate-900">Boys Everyday T-Shirts</div>
+        <div onclick="filterByCategory('Boys Active Shorts & Joggers');toggleMobileNav()" class="cursor-pointer hover:text-slate-900">Boys Active Shorts &amp; Joggers</div>
+      </div>
+    </div>
+
+    <span onclick="showView('shop');toggleMobileNav()">Shop All</span>
+    <span onclick="showView('about');toggleMobileNav()">About Us</span>
+    <span onclick="showView('contact');toggleMobileNav()">Contact</span>
+    <span onclick="showView('wishlist');toggleMobileNav()">Wishlist</span>
+    <span onclick="showView('login');toggleMobileNav()">Account</span>
+  </div>
+
+  <!-- ═══ TOAST CONTAINER ═══ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ════════════════════════════════════════════════════════════
+     VIEWS — each <section class="view"> is toggled by JS
+     ════════════════════════════════════════════════════════════ -->
+
+  <!-- ─── HOME VIEW ──────────────────────────────────────────── -->
+  <section class="view active" id="view-home">
+    <!-- Hero -->
+    <div class="hero py-16 md:py-0 text-center">
+      <div class="max-w-4xl mx-auto px-4 w-full flex flex-col items-center justify-center h-full">
+        <div class="hero-content flex flex-col items-center justify-center w-full">
+          <div class="mb-6">
+            <span class="hero-tag mx-auto">New Collection 2026</span>
+          </div>
+          <h1 class="text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight">Elevate Your Everyday Style</h1>
+          <p class="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">Discover premium unbranded clothing crafted with care. Quality fabrics, timeless designs, and prices that make sense.</p>
+          <div class="flex gap-4 flex-wrap justify-center">
+            <button class="btn-primary" onclick="showView('shop')">Shop Now <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-outline" onclick="showView('about')">Our Story</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Featured Categories -->
+    <div class="max-w-7xl mx-auto px-4 py-20">
+      <div class="text-center mb-12">
+        <p class="text-xs uppercase tracking-[3px] text-slate-400 font-semibold mb-2">Curated For You</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-slate-900">Shop By Category</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="homeCategoryGrid"></div>
+    </div>
+    <!-- Featured Products -->
+    <div class="bg-slate-50 py-20">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+          <p class="text-xs uppercase tracking-[3px] text-slate-400 font-semibold mb-2">Best Sellers</p>
+          <h2 class="font-serif text-3xl md:text-4xl font-bold text-slate-900">Featured Products</h2>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="featuredGrid"></div>
+      </div>
+    </div>
+    <!-- Newsletter -->
+    <div class="newsletter-section">
+      <div class="max-w-lg mx-auto px-4">
+        <h3 class="font-serif text-2xl font-bold text-slate-900 mb-2">Stay In The Loop</h3>
+        <p class="text-slate-500 text-sm mb-6">Subscribe for exclusive drops, styling tips, and 10% off your first
+          order.</p>
+        <div class="flex gap-2">
+          <input type="email" placeholder="Your email address" class="auth-input flex-1">
+          <button class="btn-primary text-xs px-6">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SHOP VIEW ──────────────────────────────────────────── -->
+  <section class="view" id="view-shop">
+    <div class="max-w-7xl mx-auto px-4 py-10">
+      <div class="text-center mb-10">
+        <h1 class="font-serif text-3xl md:text-4xl font-bold text-slate-900 mb-2">All Products</h1>
+        <p class="text-slate-500 text-sm">Browse our complete collection of premium unbranded clothing.</p>
+      </div>
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar -->
+        <aside class="sidebar w-full md:w-56 shrink-0">
+          <div class="md:hidden flex items-center justify-between bg-slate-50 border border-slate-200 p-4 mb-4 cursor-pointer font-bold text-slate-800" onclick="document.getElementById('sidebarContent').classList.toggle('hidden')">
+            <span><i class="fas fa-filter mr-2"></i>Filter Categories</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div id="sidebarContent" class="hidden md:block">
+            <h3 class="hidden md:block mb-4 font-serif text-xl text-slate-900">Categories</h3>
+            <div id="sidebarCategories" class="space-y-1"></div>
+            <div class="mt-8">
+              <h3 class="hidden md:block mb-4 font-serif text-xl text-slate-900">Price Range</h3>
+              <input type="range" min="0" max="70" value="70" class="price-slider w-full" id="priceSlider"
+                oninput="filterProducts()">
+              <div class="flex justify-between text-xs text-slate-400 mt-1"><span>$0</span><span id="priceMax">$70</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <!-- Product Grid -->
+        <div class="flex-1">
+          <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" id="shopGrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PRODUCT DETAIL VIEW ────────────────────────────────── -->
+  <section class="view" id="view-product">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="breadcrumb" id="productBreadcrumb"></div>
+      <div class="flex flex-col md:flex-row gap-10" id="productDetailContent"></div>
+      <!-- Reviews Section -->
+      <div class="mt-16 border-t border-slate-200 pt-12" id="productReviews"></div>
+    </div>
+  </section>
+
+  <!-- ─── CHECKOUT VIEW ──────────────────────────────────────── -->
+  <section class="view" id="view-checkout">
+    <div class="max-w-4xl mx-auto px-4 py-10">
+      <h1 class="font-serif text-3xl font-bold text-slate-900 mb-8">Checkout</h1>
+      <div class="flex flex-col lg:flex-row gap-10" id="checkoutContent"></div>
+    </div>
+  </section>
+
+  <!-- ─── ORDER SUCCESS VIEW ─────────────────────────────────── -->
+  <section class="view" id="view-order-success">
+    <div class="max-w-xl mx-auto px-4 py-20 text-center" id="orderSuccessContent"></div>
+  </section>
+
+  <!-- ─── ABOUT VIEW ─────────────────────────────────────────── -->
+  <section class="view" id="view-about">
+    <div class="max-w-4xl mx-auto px-4 py-16">
+      <div class="text-center mb-12">
+        <p class="text-xs uppercase tracking-[3px] text-slate-400 font-semibold mb-2">Our Story</p>
+        <h1 class="font-serif text-4xl font-bold text-slate-900 mb-4">About FJBAIG</h1>
+      </div>
+      <div class="prose max-w-none space-y-6 text-slate-600 leading-relaxed">
+        <p>Welcome to <strong class="text-slate-800">FJBAIG LLC</strong> — a family-owned clothing brand born out of a
+          simple belief: everyone deserves access to high-quality, beautifully made clothing without the designer price
+          tag.</p>
+        <p>Founded in Danbury, Connecticut, we specialize in premium unbranded apparel for boys, girls, and babies.
+          Every piece in our collection is carefully sourced and quality-checked to ensure it meets our exacting
+          standards for comfort, durability, and style.</p>
+        <div class="grid md:grid-cols-3 gap-6 my-12">
+          <div class="text-center p-8 bg-slate-50">
+            <div class="text-3xl font-bold text-slate-900 mb-2">500+</div>
+            <p class="text-sm text-slate-500">Happy Customers</p>
+          </div>
+          <div class="text-center p-8 bg-slate-50">
+            <div class="text-3xl font-bold text-slate-900 mb-2">100%</div>
+            <p class="text-sm text-slate-500">Quality Guarantee</p>
+          </div>
+          <div class="text-center p-8 bg-slate-50">
+            <div class="text-3xl font-bold text-slate-900 mb-2">24/7</div>
+            <p class="text-sm text-slate-500">Customer Support</p>
+          </div>
+        </div>
+        <p>Our mission is to deliver clothing that looks and feels premium, crafted from the finest fabrics, and offered
+          at honest prices. We believe that quality shouldn't be a luxury — it should be the standard.</p>
+        <p><strong class="text-slate-800">FJBAIG LLC</strong><br>8 Pahquioque Ave, Danbury, CT 06810<br>Email: <a
+            href="mailto:mbhcell@gmail.com" class="text-slate-900 underline">mbhcell@gmail.com</a><br>Phone: <a
+            href="tel:+17864706718" class="text-slate-900 underline">+1 (786) 470-6718</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT VIEW ───────────────────────────────────────── -->
+  <section class="view" id="view-contact">
+    <div class="max-w-4xl mx-auto px-4 py-16">
+      <div class="text-center mb-12">
+        <p class="text-xs uppercase tracking-[3px] text-slate-400 font-semibold mb-2">Get In Touch</p>
+        <h1 class="font-serif text-4xl font-bold text-slate-900 mb-4">Contact Us</h1>
+        <p class="text-slate-500">We'd love to hear from you. Reach out anytime.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-12">
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-slate-100 flex items-center justify-center text-slate-600 shrink-0"><i
+                class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <h4 class="font-semibold text-slate-800 mb-1">Address</h4>
+              <p class="text-slate-500 text-sm">8 Pahquioque Ave, Danbury, CT 06810</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-slate-100 flex items-center justify-center text-slate-600 shrink-0"><i
+                class="fas fa-envelope"></i></div>
+            <div>
+              <h4 class="font-semibold text-slate-800 mb-1">Email</h4>
+              <p class="text-slate-500 text-sm">mbhcell@gmail.com</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 bg-slate-100 flex items-center justify-center text-slate-600 shrink-0"><i
+                class="fas fa-phone"></i></div>
+            <div>
+              <h4 class="font-semibold text-slate-800 mb-1">Phone / WhatsApp</h4>
+              <p class="text-slate-500 text-sm">+1 (786) 470-6718</p>
+            </div>
+          </div>
+        </div>
+        <form onsubmit="handleContact(event)" class="space-y-4">
+          <input type="text" placeholder="Full Name" required class="checkout-input">
+          <input type="email" placeholder="Email Address" required class="checkout-input">
+          <input type="text" placeholder="Subject" class="checkout-input">
+          <textarea rows="5" placeholder="Your Message" required class="checkout-input"
+            style="resize:vertical"></textarea>
+          <button type="submit" class="btn-primary w-full justify-center">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LOGIN VIEW ─────────────────────────────────────────── -->
+  <section class="view" id="view-login">
+    <div class="max-w-md mx-auto px-4 py-20">
+      <div class="text-center mb-8">
+        <h1 class="font-serif text-3xl font-bold text-slate-900 mb-2">Welcome Back</h1>
+        <p class="text-slate-500 text-sm">Sign in to your FJBAIG account</p>
+      </div>
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <input type="email" id="loginEmail" placeholder="Email Address" required class="auth-input">
+        <input type="password" id="loginPass" placeholder="Password" required class="auth-input">
+        <button type="submit" class="btn-primary w-full justify-center">Sign In</button>
+      </form>
+      <p class="text-center text-sm text-slate-500 mt-6">Don't have an account? <span
+          class="text-slate-900 font-semibold cursor-pointer underline" onclick="showView('register')">Create one</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── REGISTER VIEW ──────────────────────────────────────── -->
+  <section class="view" id="view-register">
+    <div class="max-w-md mx-auto px-4 py-20">
+      <div class="text-center mb-8">
+        <h1 class="font-serif text-3xl font-bold text-slate-900 mb-2">Create Account</h1>
+        <p class="text-slate-500 text-sm">Join FJBAIG for exclusive access</p>
+      </div>
+      <form onsubmit="handleRegister(event)" class="space-y-4">
+        <input type="text" id="regName" placeholder="Full Name" required class="auth-input">
+        <input type="email" id="regEmail" placeholder="Email Address" required class="auth-input">
+        <input type="password" id="regPass" placeholder="Password (min 6 characters)" required minlength="6"
+          class="auth-input">
+        <button type="submit" class="btn-primary w-full justify-center">Create Account</button>
+      </form>
+      <p class="text-center text-sm text-slate-500 mt-6">Already have an account? <span
+          class="text-slate-900 font-semibold cursor-pointer underline" onclick="showView('login')">Sign in</span></p>
+    </div>
+  </section>
+
+  <!-- ─── ACCOUNT VIEW ─────────────────────────────────────── -->
+  <section class="view" id="view-account">
+    <div class="max-w-4xl mx-auto px-4 py-10">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <h1 class="font-serif text-3xl font-bold text-slate-900">My Account</h1>
+        <div class="flex gap-3">
+          <button onclick="showView('orders')" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors">My Orders</button>
+          <button onclick="handleSignOut()" class="px-4 py-2 text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-100 transition-colors">Sign Out</button>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-slate-50 p-6 border border-slate-200">
+          <h3 class="font-bold text-slate-900 mb-4 text-lg">Profile Details</h3>
+          <form onsubmit="handleUpdateProfile(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Full Name</label>
+              <input type="text" id="accName" class="checkout-input" required>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Email Address</label>
+              <input type="email" id="accEmail" class="checkout-input bg-slate-100 text-slate-500 cursor-not-allowed" disabled title="Email cannot be changed directly here">
+            </div>
+            <button type="submit" class="btn-primary w-full justify-center">Update Profile</button>
+          </form>
+        </div>
+        
+        <div class="bg-slate-50 p-6 border border-slate-200">
+          <h3 class="font-bold text-slate-900 mb-4 text-lg">Change Password</h3>
+          <form onsubmit="handleChangePassword(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">New Password</label>
+              <input type="password" id="accNewPass" class="checkout-input" minlength="6" required>
+            </div>
+            <button type="submit" class="px-6 py-3 bg-slate-900 text-white text-xs font-bold uppercase tracking-[2px] hover:bg-slate-800 transition-colors w-full">Update Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MY ORDERS VIEW ─────────────────────────────────────── -->
+  <section class="view" id="view-orders">
+    <div class="max-w-4xl mx-auto px-4 py-10">
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="font-serif text-3xl font-bold text-slate-900">My Orders</h1>
+        <button onclick="showView('account')" class="px-4 py-2 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">Back to Account</button>
+      </div>
+      <div id="ordersContent"></div>
+    </div>
+  </section>
+
+  <!-- ─── WISHLIST VIEW ──────────────────────────────────────── -->
+  <section class="view" id="view-wishlist">
+    <div class="max-w-7xl mx-auto px-4 py-10">
+      <h1 class="font-serif text-3xl font-bold text-slate-900 mb-8 text-center">My Wishlist</h1>
+      <div id="wishlistGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"></div>
+      <div id="wishlistEmpty" class="text-center py-20 hidden">
+        <i class="far fa-heart text-5xl text-slate-300 mb-4"></i>
+        <p class="text-slate-500">Your wishlist is empty.</p>
+        <button class="btn-primary mt-6" onclick="showView('shop')">Browse Products</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LEGAL VIEWS ────────────────────────────────────────── -->
+  <section class="view" id="view-privacy">
+    <div class="legal-page max-w-4xl mx-auto px-4 py-16" id="privacyContent"></div>
+  </section>
+  <section class="view" id="view-shipping">
+    <div class="legal-page max-w-4xl mx-auto px-4 py-16" id="shippingContent"></div>
+  </section>
+  <section class="view" id="view-refund">
+    <div class="legal-page max-w-4xl mx-auto px-4 py-16" id="refundContent"></div>
+  </section>
+  <section class="view" id="view-terms">
+    <div class="legal-page max-w-4xl mx-auto px-4 py-16" id="termsContent"></div>
+  </section>
+
+  <!-- ═══ CART DRAWER ═══ -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="flex items-center justify-between p-6 border-b border-slate-200">
+      <h3 class="font-semibold text-lg text-slate-900">Shopping Bag (<span id="cartCount">0</span>)</h3>
+      <button onclick="closeCart()" class="text-2xl text-slate-400 hover:text-slate-900">&times;</button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-6" id="cartItems"></div>
+    <div class="p-6 border-t border-slate-200">
+      <div class="flex justify-between mb-4"><span class="text-slate-500">Subtotal</span><span
+          class="font-bold text-slate-900" id="cartSubtotal">$0.00</span></div>
+      <button class="btn-primary w-full justify-center mb-2" id="checkoutBtn" onclick="goToCheckout()">Checkout</button>
+      <button class="btn-outline w-full justify-center text-xs" onclick="closeCart();showView('shop')">Continue
+        Shopping</button>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer" id="siteFooter">
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div>
+          <h4 style="font-family:'Playfair Display',serif;font-size:22px;letter-spacing:3px;margin-bottom:16px">FJBAIG
+          </h4>
+          <p class="text-sm leading-relaxed">Premium unbranded clothing for the entire family. Quality fabrics, timeless
+            designs.</p>
+
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <div class="space-y-3 flex flex-col">
+            <a onclick="showView('home')">Home</a><a onclick="showView('shop')">Shop</a><a
+              onclick="showView('about')">About Us</a><a onclick="showView('contact')">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4>Customer Service</h4>
+          <div class="space-y-3 flex flex-col">
+            <a onclick="showView('orders')">My Orders</a><a onclick="showView('shipping')">Shipping Policy</a><a
+              onclick="showView('refund')">Refund &amp; Returns</a><a onclick="showView('contact')">Help &amp; FAQ</a>
+          </div>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <div class="space-y-3 flex flex-col">
+            <a onclick="showView('privacy')">Privacy Policy</a><a onclick="showView('terms')">Terms &amp;
+              Conditions</a><a onclick="showView('shipping')">Shipping Policy</a><a onclick="showView('refund')">Refund
+              Policy</a>
+          </div>
+          <div class="mt-6 text-xs space-y-1">
+            <p>FJBAIG LLC</p>
+            <p>8 Pahquioque Ave, Danbury, CT 06810</p>
+            <p>mbhcell@gmail.com</p>
+            <p>+1 (786) 470-6718</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom mt-12">
+        <p>&copy; 2026 FJBAIG LLC. All rights reserved. | 8 Pahquioque Ave, Danbury, CT 06810</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ WHATSAPP WIDGET ═══ -->
+  <div class="whatsapp-widget">
+    <div class="whatsapp-tooltip">Need help? Chat with us!</div>
+    <a href="https://wa.me/17864706718?text=Hello%20FJBAIG%20Support,%20I%20need%20help%20with%20my%20order."
+      target="_blank" rel="noopener" class="whatsapp-blob"><i class="fab fa-whatsapp"></i></a>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/legal.js"></script>
+  <script src="js/views.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
