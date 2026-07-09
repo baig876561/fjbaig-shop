@@ -11,7 +11,7 @@ const PRODUCTS = [
     originalPrice: 45.00,
     category: "Boys Hoodies & Sweatshirts",
     description: "Our signature Classic Fleece Kangaroo Hoodie is the perfect everyday layer for active boys. Made from ultra-soft, premium cotton-blend fleece, it features a roomy kangaroo pocket, ribbed cuffs, and a lined hood for extra warmth. The unbranded minimalist design ensures it matches any outfit seamlessly.",
-    sizes: ["2T", "3T", "4T", "5T", "6Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://images.unsplash.com/photo-1578768079052-aa76e52ff62e?q=80&w=600&auto=format&fit=crop"
     ],
@@ -27,7 +27,7 @@ const PRODUCTS = [
     originalPrice: 38.00,
     category: "Boys Hoodies & Sweatshirts",
     description: "A staple for any boy's wardrobe, this Minimalist Crewneck Sweatshirt offers incredible comfort without the bulk. Crafted from medium-weight French terry cotton, it features a relaxed fit, reinforced stitching at the seams, and a classic crew neckline. Perfect for school or casual weekend play.",
-    sizes: ["4Y", "6Y", "8Y", "10Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop"
     ],
@@ -43,7 +43,7 @@ const PRODUCTS = [
     originalPrice: 50.00,
     category: "Boys Hoodies & Sweatshirts",
     description: "Versatile and stylish, this Full-Zip French Terry Jacket is ideal for layering across seasons. It boasts a smooth exterior with a cozy looped back inside. Features include a heavy-duty YKK front zipper, deep front pockets, and a structured collar that can be worn up or folded down.",
-    sizes: ["3Y", "5Y", "7Y", "9Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://americantall.com/cdn/shop/files/American-Tall-Men-80-20-French-Terry-Full-Zip-Hoodie-Charcoal-Mix-Front_52473dc8-2773-485b-81d5-77359391c5d6.jpg?v=1779997230"
     ],
@@ -61,7 +61,7 @@ const PRODUCTS = [
     originalPrice: 22.00,
     category: "Boys Everyday T-Shirts",
     description: "Simple, breathable, and essential. This Organic Cotton Crewneck Tee is made from 100% certified organic cotton, ensuring it is gentle on sensitive skin. The lightweight fabric keeps boys cool during summer, while the durable construction means it will survive the playground.",
-    sizes: ["2T", "3T", "4T", "5T", "6Y", "7Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop"
     ],
@@ -77,7 +77,7 @@ const PRODUCTS = [
     originalPrice: 28.00,
     category: "Boys Everyday T-Shirts",
     description: "Add texture to his wardrobe with this premium Waffle-Knit Long Sleeve Tee. The thermal waffle weave traps heat to keep him warm on chilly days while remaining breathable. Features banded cuffs to keep sleeves in place and a slightly curved hem for a modern look.",
-    sizes: ["4Y", "6Y", "8Y", "10Y", "12Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://m.media-amazon.com/images/I/71rW7lhc9bL._AC_UY1000_.jpg"
     ],
@@ -93,7 +93,7 @@ const PRODUCTS = [
     originalPrice: 25.00,
     category: "Boys Everyday T-Shirts",
     description: "Built for durability. This Heavyweight Pocket Tee utilizes dense, rugged cotton that holds its shape and stands up to rough-and-tumble play. A classic front chest pocket adds a touch of style to this otherwise minimalist essential.",
-    sizes: ["3Y", "5Y", "7Y", "9Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://cdnp.sanmar.com/medias/sys_master/images/hb6/hc3/28686940176414/1200W_9676_Chambray-0-4410ChambrayModelFront3/1200W-9676-Chambray-0-4410ChambrayModelFront3.jpg"
     ],
@@ -111,7 +111,7 @@ const PRODUCTS = [
     originalPrice: 26.00,
     category: "Boys Active Shorts & Joggers",
     description: "The ultimate play short. These French Terry Drawstring Shorts offer an elastic waistband with a functional drawstring for a customized fit. The soft terry fabric moves effortlessly, making them the go-to choice for sports, lounging, or summer camps.",
-    sizes: ["2T", "3T", "4T", "5T", "6Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://oldnavy.com.ph/cdn/shop/products/cn52753228_1200x.jpg?v=1684301853"
     ],
@@ -127,7 +127,7 @@ const PRODUCTS = [
     originalPrice: 42.00,
     category: "Boys Active Shorts & Joggers",
     description: "Upgrade his activewear with these Classic Cotton Slim-Fit Joggers. They feature a modern tapered leg, cuffed ankles, and side zip pockets to keep small items secure. The premium stretch-cotton blend ensures he looks sharp while staying completely comfortable.",
-    sizes: ["4Y", "6Y", "8Y", "10Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://galaxybyharvic.com/cdn/shop/files/BJP-301-BLACK-MODEL.jpg?v=1689014697&width=1946"
     ],
@@ -143,7 +143,7 @@ const PRODUCTS = [
     originalPrice: 36.00,
     category: "Boys Active Shorts & Joggers",
     description: "Ready for adventure. These Lightweight Canvas Cargo Shorts combine the rugged utility of classic cargos with a breathable, lightweight fabric suited for hot days. Ample pocket space lets him carry all his treasures, while the adjustable inner waist ensures a perfect fit.",
-    sizes: ["3Y", "5Y", "7Y", "9Y", "11Y"],
+    sizes: ["S", "M", "L", "XL"],
     images: [
       "https://image.hm.com/assets/hm/6d/03/6d03298dba218144c6bfb7d7df782e6c32581953.jpg?imwidth=2160"
     ],
